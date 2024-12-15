@@ -1,0 +1,16 @@
+# Cluster settings
+cluster.name: my-cluster
+node.name: node-1
+node.roles: [master, data, ingest]
+
+# Networking
+network.host: 0.0.0.0  # Bind to all IPs (for local and Docker)
+http.port: 9200
+
+# Discovery
+discovery.type: single-node  # For single-node deployment
+
+# Security (optional, only for Elasticsearch 8.x and higher)
+xpack.security.enabled: false
+xpack.security.http.ssl.enabled: false
+

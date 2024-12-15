@@ -1,10 +1,13 @@
+volumes:
+    elastic:
+        driver: local
 services:
     Transcendence:
         container_name: Transcendence
         image: docker.elastic.co/beats/filebeat:8.17.0
         restart: unless-stopped
         volumes:
-          - ./filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+          - ./filebeat.yml:/usr/share/filebeat/filebeat.yml
           - ./access.log:/var/log/apache2/access.log
         command: filebeat -e
     logstash:
@@ -15,3 +18,13 @@ services:
         - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf:ro
         depends_on:
           - Transcendence
+    Elastic_search:
+        container_name: Elastic_search
+        image: docker.elastic.co/elasticsearch/elasticsearch:8.17.0
+        volumes:
+          - elastic:/usr/share/elasticsearch/data
+          - ./elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+        depends_on:
+          - logstash
+        restart: unless-stopped
+
